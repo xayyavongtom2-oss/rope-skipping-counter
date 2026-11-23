@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b0e0d">
+  <title>Rope Skipping Counter</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.js" defer></script>
+  <script src="/static/js/app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand"><span class="brand-mark">RS</span><span>ROPE<span class="green">/</span>COUNTER</span></div>
+      <nav>
+        <button class="nav-item active" data-page="workout"><span>◉</span> Tập luyện</button>
+        <button class="nav-item" data-page="history"><span>▤</span> Lịch sử</button>
+        <button class="nav-item" data-page="stats"><span>▥</span> Thống kê</button>
+      </nav>
+      <div class="sidebar-note"><span class="live-dot"></span> AI Pose đang chạy trên trình duyệt<br><small>Video không tải lên máy chủ.</small></div>
+    </aside>
+    <main class="main">
+      <header class="topbar"><div><div class="eyebrow">FITNESS TRACKING</div><h1 id="page-title">Buổi tập của bạn</h1></div><div class="status-pill"><span class="live-dot"></span> <span id="ai-status">AI chưa khởi tạo</span></div></header>
+
+      <section id="page-workout" class="page active">
+        <div class="hero-grid">
+          <div class="camera-card card">
+            <div class="camera-head"><div><span class="eyebrow">LIVE CAMERA</span><h2>Nhận diện chuyển động</h2></div><span class="camera-badge" id="camera-state">CAMERA OFF</span></div>
+            <div class="video-wrap" id="video-wrap">
+              <video id="video" playsinline muted></video>
+              <canvas id="overlay"></canvas>
+              <div class="camera-placeholder" id="placeholder"><div class="camera-icon">▣</div><strong>Camera chưa bật</strong><span>Đặt điện thoại cách bạn khoảng 2–3 mét<br>đảm bảo nhìn thấy toàn thân.</span></div>
+              <div class="camera-message" id="camera-message"></div>
+            </div>
+            <div class="camera-controls"><button class="btn primary" id="start-camera">▶ Bật camera & bắt đầu</button><button class="btn" id="pause" disabled>Ⅱ Tạm dừng</button><button class="btn ghost" id="reset">↻ Reset</button></div>
+            <div class="privacy-line">◆ Xử lý pose ngay trên thiết bị · Không lưu video</div>
+          </div>
+          <div class="counter-card card">
+            <div class="eyebrow">TOTAL JUMPS</div><div class="count" id="count">0</div><div class="count-label">LẦN NHẢY</div>
+            <div class="counter-divider"></div>
+            <div class="metrics"><div><span class="metric-value" id="timer">00:00</span><span class="metric-label">Thời gian</span></div><div><span class="metric-value" id="rate">0.0</span><span class="metric-label">Lần/phút</span></div></div>
+            <div class="goal"><div class="goal-head"><span>Mục tiêu</span><strong><span id="goal-count">300</span> lần</strong></div><div class="progress"><div id="goal-progress"></div></div><span id="goal-note">Bắt đầu để theo dõi tiến độ</span></div>
+            <button class="btn finish" id="finish" disabled>■ Kết thúc buổi tập</button>
+          </div>
+        </div>
+        <div class="lower-grid">
+          <div class="card info-card"><div class="eyebrow">HƯỚNG DẪN NHANH</div><h2>Để AI đếm tốt hơn</h2><ul><li>Đặt điện thoại cố định, camera ngang hoặc dọc đều được.</li><li>Đứng đủ xa để camera thấy từ đầu đến bàn chân.</li><li>Tập nơi sáng và nền ít rối.</li><li>Tránh che hông hoặc chân khỏi camera.</li></ul></div>
+          <div class="card info-card"><div class="eyebrow">ĐẾM NHẢY</div><h2>Đếm theo chu kỳ cơ thể</h2><p>AI theo dõi độ cao hông. Một lần đếm được ghi khi cơ thể nâng lên rồi trở về gần vị trí đứng. Đây là bộ đếm chuyển động cơ thể, chưa xác nhận dây đã quay qua chân.</p></div>
+        </div>
+      </section>
+
+      <section id="page-history" class="page">
+        <div class="card info-card"><div class="section-title"><div><div class="eyebrow">WORKOUT LOG</div><h2>Lịch sử tập luyện</h2></div><button class="btn ghost" id="clear-history">Xóa lịch sử</button></div><div id="history-list" class="history-list"></div></div>
+      </section>
+
+      <section id="page-stats" class="page">
+        <div class="stats-grid"><div class="card stat-card"><span class="metric-label">Tổng buổi tập</span><strong id="sessions-total">0</strong></div><div class="card stat-card"><span class="metric-label">Tổng số lần nhảy</span><strong id="jumps-total">0</strong></div><div class="card stat-card"><span class="metric-label">Kỷ lục một buổi</span><strong id="record-total">0</strong></div></div>
+        <div class="card info-card chart-card"><div class="eyebrow">LAST 7 WORKOUTS</div><h2>Nhảy mỗi buổi</h2><canvas id="chart" width="900" height="280"></canvas><p id="chart-empty" class="muted">Hoàn thành buổi tập để hiển thị biểu đồ.</p></div>
+      </section>
+      <footer>ROPE SKIPPING COUNTER <span>Prototype · Pose estimation on-device</span></footer>
+    </main>
+  </div>
+</body>
+</html>
